@@ -1,0 +1,8 @@
+[% WRAPPER wrapper.tt %]
+
+<ul>
+    <li><a href="[% c.uri_for('/asset/ad/upload') %]">広告をCSVで入稿</a></li>
+</ul>
+
+
+[% END %]

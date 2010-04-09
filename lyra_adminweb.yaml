@@ -1,0 +1,11 @@
+name: Lyra::AdminWeb
+
+Controller::Asset:
+    data_dir: /tmp
+
+Model::Schwartz:
+    databases:
+        - dsn: dbi:mysql:dbname=lyra
+          user: root
+
+

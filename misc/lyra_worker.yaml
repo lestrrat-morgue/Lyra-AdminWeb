@@ -1,0 +1,5 @@
+databases:
+    - dsn: dbi:mysql:dbname=lyra
+      user: root
+worker_classes:
+    - Lyra::Worker::ProcessCSV
