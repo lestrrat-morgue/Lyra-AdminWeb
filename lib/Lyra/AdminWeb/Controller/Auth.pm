@@ -36,6 +36,15 @@ sub login
     }
 }
 
+sub logout
+    :Local
+    :Args(0)
+{
+    my ($self, $c) = @_;
+    $c->logout;
+    $c->res->redirect( $c->uri_for('/') );
+}
+
 __PACKAGE__->meta->make_immutable();
 
 1;
