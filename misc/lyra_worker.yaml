@@ -2,4 +2,7 @@ databases:
     - dsn: dbi:mysql:dbname=lyra
       user: root
 worker_classes:
-    - Lyra::Worker::ProcessCSV
+    - class: Lyra::Worker::ProcessCSV
+      connect_info:
+          - dbi:mysql:dbname=lyra
+          - root

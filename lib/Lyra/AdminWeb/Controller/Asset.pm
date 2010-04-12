@@ -1,6 +1,5 @@
 package Lyra::AdminWeb::Controller::Asset;
 use Moose;
-use Data::UUID;
 use Lyra::Form::Asset::AdUpload;
 use Sys::Hostname ();
 use namespace::autoclean;
@@ -8,22 +7,6 @@ use namespace::autoclean;
 BEGIN {
     extends 'Catalyst::Controller';
     with 'Lyra::Trait::Catalyst::Controller::WithAuth';
-}
-
-has data_dir => (
-    is => 'ro',
-    isa => 'Str',
-    required => 1,
-);
-
-has uuid_gen => (
-    is => 'ro',
-    isa => 'Data::UUID',
-    lazy_build => 1,
-);
-
-sub _build_uuid_gen {
-    return Data::UUID->new();
 }
 
 sub ad_upload
@@ -40,23 +23,11 @@ sub ad_upload
 
     # XXX include HTML::FormHandler
     if ($req->method eq 'POST') {
-        my $group_id = $self->uuid_gen->create_str();
-        foreach my $upload ($req->upload('file')) {
-            my $uniqkey = $self->uuid_gen->create_str();
-            my $dest = File::Spec->catfile( $self->data_dir, $uniqkey );
-            $upload->copy_to( $dest );
-            my $job = $c->model('Asset')->process_csv_async({
-                filename => $dest,
-                uniqkey  => $uniqkey,
-                group_id => $group_id,
-                format   => $format,
-            });
-
-            if (! $job) {
-                confess "Could not insert job to any database";
-            }
-        }
-
+        my $group_id = $c->model('Asset')->process_csv_uploads( {
+            format  => $format,
+            uploads => [ $req->upload('file') ],
+            member_id => $c->user->id,
+        } );
         $c->res->redirect(
             $c->uri_for( '/asset/ad/processing', {
                 job => $group_id,
@@ -65,6 +36,22 @@ sub ad_upload
     }
 }
 
+sub ad_upload_processing
+    :Path('/asset/ad/processing')
+{
+    my ($self, $c) = @_;
+
+    my $job_id = $c->req->param('job');
+    my @jobs = $c->model('DBIC')->resultset('UploadHistory')->search(
+        {
+            group_id => $job_id
+        },
+        {
+            order_by => 'created_on DESC',
+        }
+    )->all;
+    $c->stash(jobs => \@jobs);
+}
 
 __PACKAGE__->meta->make_immutable();
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
 use lib "lib";
 use App::Lyra::Worker;
+
 App::Lyra::Worker->new_with_options()->run();

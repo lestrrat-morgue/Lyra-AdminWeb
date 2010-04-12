@@ -7,19 +7,19 @@ extends 'TheSchwartz::Worker';
 
 our $INSTANCE;
 
+sub initialize {
+    my ($class, %args) = @_;
+    $INSTANCE ||= $class->new(%args);
+}
+
 sub work {
     my ($class, $job) = @_;
-warn "START @_";
     eval {
-    $INSTANCE ||= $class->new();
-warn "HERE";
         $INSTANCE->work_once($job);
     };
     if ($@) {
-warn "FAILED $@";
         $job->add_failure($@);
     } else {
-warn "COMPLETED";
         $job->completed;
     }
 }

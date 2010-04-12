@@ -1,7 +1,7 @@
 package App::Lyra::Worker;
 use Moose;
 use TheSchwartz;
-# use Lyra::Extlib;
+use Lyra::Extlib;
 use namespace::autoclean;
 
 with qw(MooseX::Getopt MooseX::SimpleConfig);
@@ -31,7 +31,18 @@ sub run {
         databases => $self->databases,
     );
     foreach my $class (@{ $self->worker_classes }) {
+        my $args;
+        if (ref $class eq 'HASH') {
+            $args  = $class;
+            $class = delete $args->{class};
+        } else {
+            $args  = {};
+        }
         Class::MOP::load_class($class);
+        my $worker = $class->initialize(
+            app => $self,
+            %$args,
+        );
         $client->can_do($class);
     }
 

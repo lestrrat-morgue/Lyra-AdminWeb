@@ -13,6 +13,14 @@ BEGIN {
 sub index
     :Path :Args(0)
 {
+    my ($self, $c) = @_;
+
+    my $assets = $c->model('Asset')->load_for({
+        member_id => $c->user->id,
+    });
+    $c->stash(
+        assets => $assets
+    );
 }
 
 __PACKAGE__->meta->make_immutable();

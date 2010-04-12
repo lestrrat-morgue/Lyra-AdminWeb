@@ -27,8 +27,6 @@ has schwartz => (
 
 sub _build_schwartz {
     my $self = shift;
-use Data::Dumper;
-warn Dumper($self->databases);
     return TheSchwartz->new(
         databases => $self->databases,
         prioritize => $self->prioritize,

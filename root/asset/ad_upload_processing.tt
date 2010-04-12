@@ -1,0 +1,18 @@
+[% WRAPPER wrapper.tt %]
+
+<table>
+<tr>
+    <th>ジョブ ID</th>
+    <th>状態</th>
+    <th>アップロード時間</th>
+</tr>
+[% FOREACH job IN jobs %]
+<tr>
+    <td>[% job.id %]</td>
+    <td>[% IF (job.status == 0) %]正常終了[% ELSIF (job.status == 1) %]待機中[% END %]</td>
+    <td>[% job.created_on.strftime('%Y/%m/%d %H:%M') %]</td>
+</tr>
+[% END %]
+</table>
+
+[% END %]
