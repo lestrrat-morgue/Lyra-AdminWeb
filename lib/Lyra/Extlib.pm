@@ -13,7 +13,7 @@ sub find_base {
     my $path = $INC{ $package };
     my $base;
 
-    if ($ENV{HARNESS_ACTIVE}) {
+    if ($ENV{HARNESS_ACTIVE} || $path =~ /blib/) {
         # I'm at $HOME/blib/lib/Lyra
         #         (0) (1)  (2)  (3)
         # that's 4 directories up
