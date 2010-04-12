@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+use strict;
+use blib;
+use Lyra::Extlib;
+use App::Lyra::DeployDB;
+use Module::Pluggable::Object;
+
+App::Lyra::DeployDB->new_with_options()->run();

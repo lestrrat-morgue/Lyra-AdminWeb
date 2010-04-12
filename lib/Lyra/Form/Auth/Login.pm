@@ -8,8 +8,8 @@ has '+action' => (
     default => '/auth/login'
 );
 
-has_field username => (
-    label => 'ユーザーID',
+has_field email => (
+    label => 'メールアドレス',
     type => 'Text',
     required => 1,
 );

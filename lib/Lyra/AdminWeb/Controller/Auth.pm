@@ -18,7 +18,10 @@ sub login
     if ($c->req->method eq 'POST') {
         $form->process(params => $c->req->params);
         if ($form->validated) {
-            if ($c->authenticate({ username => $form->field('username')->value, password => $form->field('password')->value } ) ) {
+            if ($c->authenticate({
+                password => $form->field('password')->value,
+                email => $form->field('email')->value,
+            } ) ) {
                 my $next_uri = URI->new($form->field('next_uri')->value || '/');
                 $next_uri->scheme(undef);
                 $next_uri->host(undef) if $next_uri->can('host');

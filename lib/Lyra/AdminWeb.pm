@@ -1,15 +1,17 @@
 package Lyra::AdminWeb;
 use Moose;
+use Lyra::Extlib;
 use namespace::autoclean;
 
 use Catalyst::Runtime 5.80;
 use Catalyst qw/
     -Debug
-    Authentication
     ConfigLoader
+
+    Authentication
     Session
     Session::State::Cookie
-    Session::Store::File
+    Session::Store::DBI
     Static::Simple
     Unicode
 /;
@@ -24,27 +26,11 @@ __PACKAGE__->config(
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
     default_view => 'TT',
-    'Plugin::Authentication' => {
-        default_realm => 'debug',
-        realms => {
-            debug => {
-                credential => {
-                    class => 'Password',
-                    password_field => 'password',
-                    password_type => 'clear',
-                },
-                store => {
-                    class => 'Minimal',
-                    users => {
-                        admin => {
-                            password => 'admin',
-                            roles => [ qw(admin) ]
-                        }
-                    }
-                }
-            }
-        }
-    }
+    'Plugin::Session' => {
+        dbi_dbh => 'DBIC',
+        expires => 3600,
+        dbi_table => 'lyra_sessions',
+    },
 );
 
 # Start the application

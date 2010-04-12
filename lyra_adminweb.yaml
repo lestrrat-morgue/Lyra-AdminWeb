@@ -3,9 +3,13 @@ name: Lyra::AdminWeb
 Controller::Asset:
     data_dir: /tmp
 
+Model::DBIC:
+    connect_info:
+        - dbi:mysql:dbname=lyra
+        - root
+
 Model::Schwartz:
     databases:
         - dsn: dbi:mysql:dbname=lyra
           user: root
-
 
