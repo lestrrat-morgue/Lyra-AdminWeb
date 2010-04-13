@@ -11,7 +11,7 @@ use Catalyst qw/
     Authentication
     Session
     Session::State::Cookie
-    Session::Store::DBI
+    Session::Store::Memcached
     Static::Simple
     Unicode
 /;
@@ -27,9 +27,10 @@ __PACKAGE__->config(
     disable_component_resolution_regex_fallback => 1,
     default_view => 'TT',
     'Plugin::Session' => {
-        dbi_dbh => 'DBIC',
+        memcached_new_args => {
+            data => [ '127.0.0.1:11211' ],
+        },
         expires => 3600,
-        dbi_table => 'lyra_sessions',
     },
 );
 
