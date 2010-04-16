@@ -50,7 +50,7 @@ sub ad_upload_processing
             order_by => 'created_on DESC',
         }
     )->all;
-    $c->stash(jobs => \@jobs);
+    $c->stash(job_id => $job_id, jobs => \@jobs);
 }
 
 __PACKAGE__->meta->make_immutable();

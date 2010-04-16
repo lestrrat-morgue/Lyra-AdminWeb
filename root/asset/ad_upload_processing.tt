@@ -1,3 +1,4 @@
+[% IF (jobs.0.status != 0) %][% page.refresh.uri => c.uri_for("/asset/ad/processing", { job => job_id } ) %][% END %]
 [% WRAPPER wrapper.tt %]
 
 <table>
@@ -9,7 +10,7 @@
 [% FOREACH job IN jobs %]
 <tr>
     <td>[% job.id %]</td>
-    <td>[% IF (job.status == 0) %]正常終了[% ELSIF (job.status == 1) %]待機中[% END %]</td>
+    <td>[% IF (job.status == 0) %]<span style="color: #c00">エラー</span>[% ELSIF (job.status == 0) %]<span style="color: #0a0">正常終了</span>[% ELSIF (job.status == 1) %]待機中[% END %]</td>
     <td>[% job.created_on.strftime('%Y/%m/%d %H:%M') %]</td>
 </tr>
 [% END %]

@@ -1,6 +1,9 @@
 <html>
 <head>
     <title>[% page.title | html %]</title>
+[%- IF (page.refresh) %]
+    <meta http-equiv="Refresh" content="[% page.refresh.timeout || 5 %]; url=[% page.refresh.uri %]">
+[% END -%]
 </head>
 <body>
 <ul id="main_navigation">
