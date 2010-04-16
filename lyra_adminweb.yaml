@@ -1,6 +1,6 @@
 name: Lyra::AdminWeb
 
-Controller::Asset:
+Model::Asset:
     data_dir: /tmp
 
 Model::DBIC:
